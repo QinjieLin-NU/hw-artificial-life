@@ -5,14 +5,14 @@ import numpy
 length = 400 #200
 pi = numpy.pi
 max_force = 100 #20
-numSensorNeurons = 4
-numMotorNeurons = 3
+numSensorNeurons = 7
+numMotorNeurons = 6
 motorJointRange = 0.2
 gravity=-0.0#-9.8
 
 #EArelated
-numberOfGenerations= 10 #10
-populationSize = 10 #10
+numberOfGenerations= 1 #10
+populationSize = 1 #10
 
 # random related
 import random
