@@ -9,7 +9,7 @@ from env.robot import ROBOT
 from env.world import WORLD
 
 class SIMULATION:
-  def __init__(self, directOrGUI, brainID):
+  def __init__(self, directOrGUI, brainID, removeBrain=True):
     if directOrGUI == 'DIRECT':
       self.physicsClient = p.connect(p.DIRECT)#DIRECT GUI
     if directOrGUI == 'GUI':
@@ -18,13 +18,14 @@ class SIMULATION:
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setGravity(0,0,c.gravity)
     self.world = WORLD()
-    self.robot = ROBOT(brainID=brainID)
+    self.robot = ROBOT(brainID=brainID,removeBrain=removeBrain)
   
   def Run(self):
+    # input()
     for t in range(c.length):
       # print(f"loop: {t}")
-      if self.directOrGUI:
-        time.sleep(1/1000)
+      if self.directOrGUI=="GUI":
+        time.sleep(1/100)
       p.stepSimulation()
       self.robot.Sense(t)
 

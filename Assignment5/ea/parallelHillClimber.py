@@ -7,12 +7,18 @@ import ea.constants as c
 
 class PARALLEL_HILL_CLIMBER:
   def __init__(self):
-    os.system("del .\\data\\brain*.nndf"), os.system("del .\\data\\fitness*.txt"), os.system("del .\\data\\tmp*.txt") 
+    os.system("rm ./data/brain*.nndf"), os.system("rm ./data/fitness*.txt"), os.system("rm ./data/tmp*.txt") 
     self.parents = {}
     self.nextAvailableID = 0
+    self.generate_body_world = False
     for i in range(c.populationSize):
       self.parents[i] = SOLUTION(self.nextAvailableID)
       self.nextAvailableID += 1
+      #only generate body.urdf and world.sdf once
+      if not self.generate_body_world:
+        self.parents[i].Create_World()
+        self.parents[i].Generate_Body()
+        self.generate_body_world = True
     self.average_fitness_history = []
 
   def Evolve(self):
@@ -30,9 +36,9 @@ class PARALLEL_HILL_CLIMBER:
     self.Select()
     self.Save()
   
-  def Evaluate(self, solutions):
+  def Evaluate(self, solutions, directOrGUI='DIRECT'):
     for k in solutions.keys():
-      solutions[k].Start_Simulation('DIRECT')
+      solutions[k].Start_Simulation(directOrGUI)
     for k in solutions.keys():
       solutions[k].Wait_For_Simulation_To_End()
 
@@ -69,9 +75,8 @@ class PARALLEL_HILL_CLIMBER:
 
   def Show_Best(self):
     sorted_parents = sorted(self.parents.items(), key=lambda x: x[1].fitness)
-    print("best parent:",sorted_parents[0][1].fitness)
+    print("best parent:",sorted_parents[-1][1].fitness)
     plt.plot(self.average_fitness_history), plt.ylabel("Average fitness"), plt.xlabel("generation"), plt.show()
-    sorted_parents[0][1].Start_Simulation('GUI')
-
-
+    sorted_parents[-1][1].Start_Simulation('GUI')
+    sorted_parents[-1][1].Save_Brain("-100")
 

@@ -8,7 +8,7 @@ from env.motor import MOTOR
 from env.sensor import SENSOR
 
 class ROBOT:
-  def __init__(self, brainID):
+  def __init__(self, brainID, removeBrain=True):
     self.sensors = dict()
     self.motors = dict()
     self.robotId = p.loadURDF("./data/body.urdf")
@@ -17,7 +17,8 @@ class ROBOT:
     self.Prepare_To_Act()
     self.solutionID = brainID
     self.nn = NEURAL_NETWORK(f"./data/brain{brainID}.nndf")
-    os.system(f"del .\\data\\brain{brainID}.nndf") #line67
+    if removeBrain:
+      os.system(f"rm ./data/brain{brainID}.nndf") #line67
 
   def Prepare_To_Sense(self):
     self.sensors = dict()
@@ -55,5 +56,5 @@ class ROBOT:
     zCoordinateOfLinkZero = positionOfLinkZero[2]
     #important
     with open(f"./data/tmp{self.solutionID}.txt","w") as f:
-      f.write(str(zCoordinateOfLinkZero))
+      f.write(str(zCoordinateOfLinkZero+xCoordinateOfLinkZero))
     os.rename(f"./data/tmp{self.solutionID}.txt", f"./data/fitness{self.solutionID}.txt", )
