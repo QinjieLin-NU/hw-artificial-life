@@ -2,7 +2,7 @@
 
 ## Assignment 5: design your own creatures
 
-[video](https://youtu.be/tLlP0EKRbAM)
+[video](https://youtu.be/9l8x-92wuOg)
 
 ### Step1. Run
 
