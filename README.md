@@ -2,6 +2,8 @@
 
 ## Assignment 5: design your own creatures
 
+[video](https://youtu.be/tLlP0EKRbAM)
+
 ### Step1. Run
 
   In this assignment, I design a jumping robot, use EA(Evolutation Algorithm) to make robot climb steps. The EA try to maximize the fitness function. The fitness of EA is `Zposition+Xposition`.
