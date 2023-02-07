@@ -23,6 +23,6 @@
   python replay.py best
   ```
 
-  ![](./Assignment5\data\assignment5-random.gif) | ![](./Assignment5\data\assignment5-evolution.gif)
+  ![](./Assignment5/data/assignment5-random.gif) | ![](./Assignment5/data/assignment5-evolution.gif)
   :-------------------------:|:-------------------------:
 
