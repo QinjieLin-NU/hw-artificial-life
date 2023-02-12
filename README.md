@@ -6,7 +6,7 @@
 
 ### Step1. Run
 
-  In this assignment, I design a jumping robot, use EA(Evolutation Algorithm) to make robot climb steps. The EA try to maximize the fitness function. The fitness of EA is `Zposition+Xposition`.
+  In this assignment, I design a virus-shape robot, use EA(Evolutation Algorithm) to make robot climb steps. The EA try to maximize the fitness function. The fitness of EA is `Zposition+Xposition`.
 
   Notice that this program needs at least 60 cpus to run. Because the `numberOfGenerations=5` and `populationSize=60`. To run the EA, use following command: 
   
@@ -23,6 +23,6 @@
   python replay.py best
   ```
 
-  ![](./Assignment5/data/assignment5-random.gif) | ![](./Assignment5/data/assignment5-evolution.gif)
-  :-------------------------:|:-------------------------:
+  ![](./Assignment5/data/virus.jpeg) |![](./Assignment5/data/assignment5-random.gif) | ![](./Assignment5/data/assignment5-evolution.gif)
+  :-------------------------:|:-------------------------:|:-------------------------:
 
