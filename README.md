@@ -12,20 +12,18 @@
 
 ### Step1. Run
 
-  I Then I use EA(Evolutation Algorithm) to make robot crawl. The EA try to maximize the fitness function. The fitness of EA is `Xposition`.
-  Notice that this program needs at least 60 cpus to run. Because the `numberOfGenerations=3` and `populationSize=40`. To run the EA, use following command: 
-  
+  I use EA(Evolutation Algorithm) to make robot crawl. The EA try to maximize the fitness function. The fitness of EA is `Xposition`. Notice that this program needs at least 60 cpus to run. Because the `numberOfGenerations=3` and `populationSize=40`. The workflow of generating robots and training is illustrated in the following figure. 
+  ![](./Assignment7/data/flow.png)
+    
+  To run the EA, use following command: 
   ```
   cd Assignment7
   python search.py
   ```
 
-  The workflow of running this command is illustrated in the following figure.
-  ![](./Assignment7/data/flow.png)
-
 ### Step2. Replay
 
-  After running EA, we get good neurons wrights and use neuron-based control to replay the result, as illiustrated in the foloowing figure. To replay a single result in the video, run this:
+  After running EA, we get good neurons weights and use neuron-based control to replay the result, as illiustrated in the foloowing figure. To replay a single result in the video, run this:
   
   ```
   cd Assignment7
