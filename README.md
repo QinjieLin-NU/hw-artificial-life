@@ -2,6 +2,8 @@
 
 ## Assignment 8: Design morphology and behavior for locomotion.
 
+[video](https://youtu.be/FtZl_7wjoMU)
+
 ## I Overview
 
   This assignment is about using evolutionary algorithms (EA) to design a robot morphology and behavior for locomotion. The goal is to optimize both the robot's physical shape and its control strategy to achieve efficient and robust locomotion. The approach will use a parallel hill climber of EA that will run in a distributed computing environment to explore the design space efficiently. Here is an overview:
@@ -38,6 +40,9 @@
   python replay_brain.py best best seed_id
   python replay_brain.py random best seed_id
   ```
+
+  ![](./Assignment8/data/A8_v0.gif)
+
 
 ## IV Result
 
