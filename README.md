@@ -18,7 +18,7 @@
 
   Each candidate solution (robot) is evaluated using a fitness function that quantifies its performance in terms of locomotion. The fitness function takes into account various criteria such as speed, stability, energy efficiency, and other desired properties of locomotion.
 
-  After evaluating the fitness of each candidate solution, the EA selects the most fit solutions and uses them to create the next generation of robots through reproduction and mutation. The process continues until a satisfactory solution (i.e. robot) is found, or a certain stopping criterion (e.g. maximum number of generations) is met. We illustrate the population in the following figure.
+  After evaluating the fitness of each candidate solution, the EA selects the most fit solutions and uses them to create the next generation of robots through reproduction and mutation. The process continues until a satisfactory solution (i.e. robot) is found, or a certain stopping criterion (e.g. maximum number of generations) is met. We illustrate the mutation in the following figure.
 
   ![](./Assignment8/data/mutation.png)
 
@@ -41,6 +41,9 @@
 
 ### IV Result
 
+  Here is a plot containing five fitness curves, each starting from five different random seed, showing the fitness of the best creature in the population at each generation.
+
+  ![](./Assignment8/data/Figure.png)
 
 
 ### notes on the code 
