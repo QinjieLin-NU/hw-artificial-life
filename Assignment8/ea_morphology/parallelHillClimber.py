@@ -79,6 +79,6 @@ class PARALLEL_HILL_CLIMBER:
   def Show_Best(self):
     sorted_parents = sorted(self.parents.items(), key=lambda x: x[1].fitness)
     print(f"best parent of seed-{self.seedId}:",sorted_parents[-1][1].fitness)
-    plt.plot(self.average_fitness_history), plt.ylabel("Average fitness"), plt.xlabel("generation"), plt.show()
+    # plt.plot(self.average_fitness_history), plt.ylabel("Average fitness"), plt.xlabel("generation"), plt.show()
     sorted_parents[-1][1].Replay_Best()
     os.system(f"cp -r ./data/seed{self.seedId}/body{sorted_parents[-1][1].m_id} ./data/seed{self.seedId}/bodybest")

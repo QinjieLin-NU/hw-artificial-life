@@ -22,7 +22,7 @@ class SIMULATION:
     if directOrGUI == 'GUI':
       self.physicsClient = p.connect(p.GUI)#DIRECT GUI
       p.configureDebugVisualizer(p.COV_ENABLE_GUI,0) #Disable sidebar
-      p.resetDebugVisualizerCamera(cameraDistance=1.4, cameraYaw=-69, cameraPitch=-38, cameraTargetPosition=[0.07, -0.18, -0.03]) #reser camera
+      p.resetDebugVisualizerCamera(cameraDistance=1.40, cameraYaw=-53, cameraPitch=-25, cameraTargetPosition=[0.26, -0.34, 0.65]) #reser camera
     self.directOrGUI=directOrGUI
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
     p.setGravity(0,0,c.gravity)
@@ -36,9 +36,8 @@ class SIMULATION:
     if self.onlyView:
       input()
       exit()
-    input()
     for t in range(c.length):
-      # print(p.getDebugVisualizerCamera())
+      print(p.getDebugVisualizerCamera())
       if self.directOrGUI=="GUI":
         time.sleep(1/200)
       p.stepSimulation()
