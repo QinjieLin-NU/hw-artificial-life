@@ -8,12 +8,12 @@
 
   In this assignment, we expand the design space ("morphospace") of random creature generator from asgmt 6 by allowing the chain to branch in 3D. not just random "snakes" (1D), but randomly shaped/sensorized/innervated/motorized "lizards" (2D) and "horses" (3D) too. Links with and without sensors should be colored green and blue, respectively. The inspiration of such design comes from insect crawling, illustrated in the following figure. 
 
-  ![](./Assignment7/data/description.png)
+  ![](./data/description.png)
 
 ### Step1. Run
 
   I use EA(Evolutation Algorithm) to make robot crawl. The EA try to maximize the fitness function. The fitness of EA is `Xposition`. Notice that this program needs at least 60 cpus to run. Because the `numberOfGenerations=3` and `populationSize=40`. The workflow of generating robots and training is illustrated in the following figure. 
-  ![](./Assignment7/data/flow.png)
+  ![](./data/flow.png)
     
   To run the EA, use following command: 
   ```
@@ -31,7 +31,7 @@
   ```
 
 
-  ![](./Assignment7/data/control.png) | ![](./Assignment7/data/A7-v0.gif)
+  ![](./data/control.png) | ![](./data/A7-v0.gif)
   :-------------------------:|:-------------------------:
 
 
