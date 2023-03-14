@@ -6,7 +6,7 @@
 
   <!-- [video](https://youtu.be/FtZl_7wjoMU) -->
 
-# I Abstract
+# I Abstract (Hypothesis ans Inspiration)
 
   Robots designed for specific tasks often struggle to adapt to new environments efficiently. In contrast, animals exhibit remarkable versatility in locomotion due to their diverse morphology. 
   Inspired by nature, we present a novel approach to optimize robot morphology for versatile locomotion in challenging environments using evolutionary algorithms. 
@@ -16,6 +16,15 @@
   Our optimized morphologies show remarkable versatility in these tasks, outperforming task-specific designs and demonstrating the potential of adaptable robots for real-world applications.
 
   ![](./final/data/abstract.png)
+
+
+# II Teaser Gif and simulation run
+
+  our total simulations run is `200K`, calculated by`4(envs) x 5(seeds) x 10(population_morphology) x 20(generation_morphology) x 10(population_brain) x 5(generation_brain)`
+
+
+  ![](./final/data/teaser_1.gif) | ![](./final/data/teaser_2.gif)
+  :-------------------------:|:-------------------------:
 
 
 # II Method
@@ -70,14 +79,24 @@
   <!-- ![](./data/A8_v0.gif) -->
 
 
+## IV Experiment Design
+
+  How did you test it? Experimental design? Control experiment: how did you isolate the variable of interest? Where is the code for this? Draw a cartoon.
+
 ## IV Result
 
-  Here is a plot containing five fitness curves, each starting from five different random seed, showing the fitness of the best creature in the population at each generation.
+  What did you find? Plots/diagrams/data/stats? Show evolution: how did bodies/brains/behaviors change over time? What did the lineages look like? Did evolution get stuck sometimes? Why? What did those robots lack? Was there something about them that lowered the likelihood of beneficial mutations?
 
-  <!-- ![](./data/Figure1.png) -->
+  Here is a plot containing four subfigures. Each subfigure describes fitness curves of five different random seed, showing the fitness of the best creature in the population at each generation.In our experiment, our total simulations run is `200K`, calculated by`4(envs) x 5(seeds) x 10(population_morphology) x 20(generation_morphology) x 10(population_brain) x 5(generation_brain)`
+  
+  ![](./final/data/fitness_curve.png)
 
 
-## notes on the code 
+## Discussion and Notes:
+
+  `Mutation of morphology` sometimes does not happen, see `generate_morphology.py`.
+  
+  `Morphology generation `sometimes causes seperation 
 
   `ea_morphology/solutuion.py`:This code defines a Node class to represent a node in a tree structure, where each node has a size attribute and a list of children nodes. The Random_Node function creates a random node with a size attribute within a given range. The Expand_Node function takes a root_node and recursively expands it into a tree with a maximum depth of maximum_depth, randomly deciding whether to expand each child node or not. The Mutate function performs a mutation operation on a given tree. It first creates a deep copy of the input tree_root to avoid modifying the original tree. Then, it uses the traverse_node function to obtain a list of all the nodes in the tree along with their depths. Next, it selects a random node n from the list of nodes and the depth d of that node. The Expand_Node function is then called on this node n to create a modified version of the tree with a new subtree appended to n at depth d+1. Finally, the mutated tree is returned.
 
