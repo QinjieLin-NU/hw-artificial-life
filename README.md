@@ -22,10 +22,10 @@
 
   As shown in the following fugure, our method aims to optimize the morphology of a rigid-body robot for a specific task, such as locomotion in challenging terrain. We propose a two-level, or bi-level, evolutionary algorithm approach. At the first level, we use an evolutionary algorithm to optimize the robot's morphology, or its physical structure, to improve its performance on the task. At the second level, we use another evolutionary algorithm to optimize the robot's control policy, or the way it moves its body, based on the morphology selected from the first level.
     
-  ![](./data/method-0.png)
-  <!-- <p align="center">
-  <img src="./data/method-0.png" alt="alt text" width="" height="">
-  </p> -->
+  <!-- ![](./data/method-0.png) -->
+  <p align="center">
+  <img src="./final/data/method-0.png" alt="alt text" width="" height="">
+  </p>
 
   ## II.I Morphology evolution
 
