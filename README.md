@@ -20,14 +20,29 @@
 
 # II Teaser Gif and simulation run
 
-  our total simulations run is `200K`, calculated by`4(envs) x 5(seeds) x 10(population_morphology) x 20(generation_morphology) x 10(population_brain) x 5(generation_brain)`
-
+  Our total simulations run is `200K`, calculated by4(envs) x 5(seeds) x 10(population_morphology) x 20(generation_morphology) x 10(population_brain) x 5(generation_brain).
 
   ![](./final/data/teaser_1.gif) | ![](./final/data/teaser_2.gif)
   :-------------------------:|:-------------------------:
 
+  Teaser: This teaser answer one question: Can robots evolve to conquer challenging terrains? Yes. They can. Specifically, the top row shows robots with random design and brain, struggling to move on four challenging environment. After evolution, the robot's morphology begins to change, and different variations of the robot with various shapes and sizes appear in succession. The bottown rows shows best robot design and brain during the evolution, that appears to be moving with faster speed. We observe that the evolvoed robots is similar to real-world animals. - the jumper robot look likes Kangaroos, the climbing robots looks like mountain goat, the maze robot looks like insect crawling flexibiliy, the crawl robots looks like snakeing moving in rough teraains. These observation mighe seem unobvious, but we can still imagine it. :)
 
-# II Method
+
+# III Experiment Design
+
+  Method Overview: The implementation of our method is refered to parallelHillClimber section in Ludobots. We use the two-level EA (evolutionary algorithm) to enable the evolution of robots, consisting of both morphology and control. The first-level EA evolves the morphology of the robot, i.e., the body links and joints info, while the second-level EA evolves the control, i.e., the brain or a fully-connected linear layer of the robot. The fitness of  children in the first level is the best children's fitness in the second level. The fitness of brain optimization is evaluated based on the final `X position` of the body. 
+  
+  <p align="center">
+  <img src="./final/data/ea_simulation.png" alt="alt text" width="" height="">
+  </p>
+
+  Control Experiment: To prove that, robot morphology evolves differently in different chanllenging environment, we define four chanllenging environment in the Pybullet simulation (Obstacle, Step, Terrain, Bumper). Then, we initilize the two-level EA with the same seed to evolves the morphology and brain of the robots. Specifically, the first genenration of the algorithme is with the same morphology and brain. After evolution 5 different seeds, we can see that the robots alwasys evolve differently in different challenging environment. This implies that robot can evolve their morphology to better adapt to the environment.   
+
+  <p align="center">
+  <img src="./final/data/ea_generations.png" alt="alt text" width="" height="">
+  </p>
+
+# III Method Details
 
   As shown in the following fugure, our method aims to optimize the morphology of a rigid-body robot for a specific task, such as locomotion in challenging terrain. We propose a two-level, or bi-level, evolutionary algorithm approach. At the first level, we use an evolutionary algorithm to optimize the robot's morphology, or its physical structure, to improve its performance on the task. At the second level, we use another evolutionary algorithm to optimize the robot's control policy, or the way it moves its body, based on the morphology selected from the first level.
     
@@ -36,7 +51,7 @@
   <img src="./final/data/method-0.png" alt="alt text" width="" height="">
   </p>
 
-  ## II.I Morphology evolution
+  ## III.I Morphology evolution
 
   Population: In this project, the Evolutionary Algorithm (EA) is used to optimize both the morphology and behavior of a robot for locomotion. The EA works by creating a population of candidate solutions (i.e. robots) and iteratively improving them through selection, reproduction, and mutation. We illustrate the population in the following figure.
 
@@ -51,41 +66,35 @@
   ![](./final/data/mor-selection.png)
 
 
-  ## II.II Brain evolution
+  ## III.II Brain evolution
 
-  Population:  
+  Populations, mutation and selection: Since we have describe the brain evolutaion in the partII, we refer the details of the mutation, selection, and population to the ParallelHillClimber section in Ludobots.
 
-  Mutation: 
+## IV Run and Replay Result
 
-  Selction: 
-
-## III Run and Replay Result
-
-  To run the EA, use following command: 
+  To run two-level EA, use following command: 
   
   ```
-  cd Assignment8
-  python search_morphology.py
+  cd final
+  python search_morphology.py --seed 1234 --env terrain
   ```
 
-  To replay the best and random result, use following command: 
+  To replay the best and best result, use following command: 
   
   ```
-  cd Assignment8
-  python replay_brain.py best best seed_id
-  python replay_brain.py random best seed_id
+  cd final
+  python replay_brain.py --brain best --urdf best --seed 1234 --env terrain
+  python replay_brain.py --brain random --urdf random --seed 1234 --env terrain
   ```
 
-  <!-- ![](./data/A8_v0.gif) -->
+  To replay the generations of two-level EA, use following command: 
+  
+  ```
+  cd final
+  python replay_generation.py --seed 1234 --env terrain --child 0
+  ```
 
-
-## IV Experiment Design
-
-  How did you test it? Experimental design? Control experiment: how did you isolate the variable of interest? Where is the code for this? Draw a cartoon.
-
-## IV Result
-
-  What did you find? Plots/diagrams/data/stats? Show evolution: how did bodies/brains/behaviors change over time? What did the lineages look like? Did evolution get stuck sometimes? Why? What did those robots lack? Was there something about them that lowered the likelihood of beneficial mutations?
+## VI Experiment Result
 
   Here is a plot containing four subfigures. Each subfigure describes fitness curves of five different random seed, showing the fitness of the best creature in the population at each generation.In our experiment, our total simulations run is `200K`, calculated by`4(envs) x 5(seeds) x 10(population_morphology) x 20(generation_morphology) x 10(population_brain) x 5(generation_brain)`
   
@@ -94,9 +103,9 @@
 
 ## Discussion and Notes:
 
-  `Mutation of morphology` sometimes does not happen, see `generate_morphology.py`.
+  Limitation1: Mutation of morphology sometimes does not happen, see `generate_morphology.py`.
   
-  `Morphology generation `sometimes causes seperation 
+  Limitation2: Morphology generation sometimes causes seperation. 
 
   `ea_morphology/solutuion.py`:This code defines a Node class to represent a node in a tree structure, where each node has a size attribute and a list of children nodes. The Random_Node function creates a random node with a size attribute within a given range. The Expand_Node function takes a root_node and recursively expands it into a tree with a maximum depth of maximum_depth, randomly deciding whether to expand each child node or not. The Mutate function performs a mutation operation on a given tree. It first creates a deep copy of the input tree_root to avoid modifying the original tree. Then, it uses the traverse_node function to obtain a list of all the nodes in the tree along with their depths. Next, it selects a random node n from the list of nodes and the depth d of that node. The Expand_Node function is then called on this node n to create a modified version of the tree with a new subtree appended to n at depth d+1. Finally, the mutated tree is returned.
 
@@ -106,7 +115,7 @@
   mutation: pick a node, expand 
   sensor num need to grater than 0
 
-### citations
+## citations
 
   ```
   Evolving 3D Morphology and Behavior by Competition
