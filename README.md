@@ -72,6 +72,15 @@
 
 ## IV Run and Replay Result
 
+  To replay the reusult in the teaser gif:
+
+  ```
+  python replay_brain.py --brain best  --urdf best --env bumper --seed 4444
+  python replay_brain.py --brain best  --urdf best --env step --seed 3333
+  python replay_brain.py --brain best  --urdf best --env obstacle --seed 2222
+  python replay_brain.py --brain best  --urdf best --env terrain --seed 3333
+  ```
+
   To run two-level EA, use following command: 
   
   ```
@@ -79,19 +88,12 @@
   python search_morphology.py --seed 1234 --env terrain
   ```
 
-  To replay the best and best result, use following command: 
+  To replay the best and best result of searching, use following command: 
   
   ```
   cd final
   python replay_brain.py --brain best --urdf best --seed 1234 --env terrain
   python replay_brain.py --brain random --urdf random --seed 1234 --env terrain
-  ```
-
-  To replay the generations of two-level EA, use following command: 
-  
-  ```
-  cd final
-  python replay_generation.py --seed 1234 --env terrain --child 0
   ```
 
 ## VI Experiment Result
