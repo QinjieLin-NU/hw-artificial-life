@@ -1,4 +1,5 @@
 import argparse
+import os
 import random
 import sys
 
@@ -17,10 +18,11 @@ def parse_args():
 
 args = parse_args()
 option = args.brain
-urdfId = random.randint(0,420) if args.urdf=="random" else args.urdf
-print("="*10,f"{urdfId}")
 seedId = args.seed
 envName = args.env
+random_urdf = random.sample([x.replace("body","") for x in os.listdir(f"./data/{envName}/seed{seedId}")],1)[0]
+urdfId = random_urdf if args.urdf=="random" else args.urdf
+print("="*10,f"{urdfId}")
 c.length = 2000
 
 if option=="best":
