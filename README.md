@@ -72,7 +72,7 @@
 
 ## IV Run and Replay Result
 
-  To replay the reusult in the teaser gif:
+  To replay the result in the teaser gif:
 
   ```
   cd final
@@ -82,14 +82,14 @@
   python replay_brain.py --brain best  --urdf best --env terrain --seed 3333
   ```
 
-  To run two-level EA, use following command: 
+  To run two-level EA, use following command, (This will open 200 parallel simulation run. To decrease the parallel number, try to decrease the population_size in `final/ea_brain/constraints.py` and   `final/ea_morphology/constraints.py`): 
   
   ```
   cd final
   python search_morphology.py --seed 1234 --env terrain
   ```
 
-  To replay the best and best result of searching, use following command: 
+  To replay the best result of searching, use following command: 
   
   ```
   cd final
@@ -109,6 +109,8 @@
   Limitation1: Mutation of morphology sometimes does not happen, see `generate_morphology.py`.
   
   Limitation2: Morphology generation sometimes causes seperation. 
+
+  Future work: Debugging the morphology encoding, adding more challenging environment, try reinforcement learning. 
 
   `ea_morphology/solutuion.py`:This code defines a Node class to represent a node in a tree structure, where each node has a size attribute and a list of children nodes. The Random_Node function creates a random node with a size attribute within a given range. The Expand_Node function takes a root_node and recursively expands it into a tree with a maximum depth of maximum_depth, randomly deciding whether to expand each child node or not. The Mutate function performs a mutation operation on a given tree. It first creates a deep copy of the input tree_root to avoid modifying the original tree. Then, it uses the traverse_node function to obtain a list of all the nodes in the tree along with their depths. Next, it selects a random node n from the list of nodes and the depth d of that node. The Expand_Node function is then called on this node n to create a modified version of the tree with a new subtree appended to n at depth d+1. Finally, the mutated tree is returned.
 
