@@ -16,7 +16,7 @@ def set_seed(seedId):
   numpy.random.seed(seedId)
 
 class SIMULATION:
-  def __init__(self, directOrGUI, brainID, urdfId, seedId, envName, removeBrain=True, onlyView=False):
+  def __init__(self, directOrGUI, brainID, urdfId, seedId, envName, removeBrain=True, onlyView=False, disconnect=True):
     if directOrGUI == 'DIRECT':
       self.physicsClient = p.connect(p.DIRECT)#DIRECT GUI
     if directOrGUI == 'GUI':
@@ -31,6 +31,7 @@ class SIMULATION:
     self.world = WORLD(envName)
     self.robot = ROBOT(urdfId=urdfId, brainID=brainID, seedId=seedId, envName=envName, removeBrain=removeBrain)
     self.onlyView = onlyView
+    self.disconnect = disconnect
   
   def Run(self):
     if self.onlyView:

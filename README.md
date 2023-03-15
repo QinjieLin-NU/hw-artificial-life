@@ -4,7 +4,7 @@
   Northwestern University CS396 - Artificial Life, 
   Final Project, 
 
-  <!-- [video](https://youtu.be/FtZl_7wjoMU) -->
+  [video](https://youtu.be/u-VeZRu_HCs)
 
 # I Abstract (Hypothesis ans Inspiration)
 
@@ -33,13 +33,13 @@
   Method Overview: The implementation of our method is refered to parallelHillClimber section in Ludobots. We use the two-level EA (evolutionary algorithm) to enable the evolution of robots, consisting of both morphology and control. The first-level EA evolves the morphology of the robot, i.e., the body links and joints info, while the second-level EA evolves the control, i.e., the brain or a fully-connected linear layer of the robot. The fitness of  children in the first level is the best children's fitness in the second level. The fitness of brain optimization is evaluated based on the final `X position` of the body. 
   
   <p align="center">
-  <img src="./final/data/ea_simulation.png" alt="alt text" width="" height="">
+  <img src="./final/data/ea_simulation_3.png" alt="alt text" width="" height="">
   </p>
 
-  Control Experiment: To prove that, robot morphology evolves differently in different chanllenging environment, we define four chanllenging environment in the Pybullet simulation (Obstacle, Step, Terrain, Bumper). Then, we initilize the two-level EA with the same seed to evolves the morphology and brain of the robots. Specifically, the first genenration of the algorithme is with the same morphology and brain. After evolution 5 different seeds, we can see that the robots alwasys evolve differently in different challenging environment. This implies that robot can evolve their morphology to better adapt to the environment.   
+  Control Experiment: To prove that, robot morphology evolves differently in different chanllenging environment, we define four chanllenging environment in the Pybullet simulation (Obstacle, Step, Terrain, Bumper). Then, we initialize the two-level EA with the same seed to evolves the morphology and brain of the robots. Specifically, the first genenrations of the algorithm are with the same morphology and brain. After evolution, we can see that the robots alwasys evolve differently in different challenging environment. This implies that robot can evolve their morphology to better adapt to the environment.   
 
   <p align="center">
-  <img src="./final/data/ea_generations.png" alt="alt text" width="" height="">
+  <img src="./final/data/ea_generations_2.png" alt="alt text" width="" height="">
   </p>
 
 # III Method Details
