@@ -75,6 +75,7 @@
   To replay the reusult in the teaser gif:
 
   ```
+  cd final
   python replay_brain.py --brain best  --urdf best --env bumper --seed 4444
   python replay_brain.py --brain best  --urdf best --env step --seed 3333
   python replay_brain.py --brain best  --urdf best --env obstacle --seed 2222
