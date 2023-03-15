@@ -18,5 +18,5 @@ expand_directions = [
 ]
 
 #EArelated
-numberOfGenerations= 20  #20 #5 #10
-populationSize = 20 #20 #60 #10
+numberOfGenerations= 2 #20  #20 #5 #10
+populationSize = 5 #20 #20 #60 #10

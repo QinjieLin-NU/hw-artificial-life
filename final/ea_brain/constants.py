@@ -9,5 +9,5 @@ motorJointRange = 1.56 #0.8 #0.5 #0.8 #0.5 good #0.2
 gravity=-9.8
 
 #EArelated
-numberOfGenerations= 5 #5 #5 #10
-populationSize = 10 #10 #60 #10
+numberOfGenerations= 2 # 5 #5 #5 #10
+populationSize = 2 #10 #10 #60 #10
