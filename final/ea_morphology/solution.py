@@ -6,6 +6,8 @@ import random
 import time
 
 import ea_morphology.constants as c
+from ea_morphology.colorPalette import sensored_palette as sensored_palette
+from ea_morphology.colorPalette import unsensored_palette as unsensored_palette
 import pyrosim.pyrosim as pyrosim
 
 class Edge:
@@ -15,9 +17,10 @@ class Edge:
     self.expand_direction = expand_direction      
 
 class Node:
-  def __init__(self, attached_edge, edge_direction_history, size, pos, sensor_tag, color, color_name, children):
+  def __init__(self, attached_edge, edge_direction_history, geometry_type, size, pos, sensor_tag, color, color_name, children):
     self.attached_edge = attached_edge
     self.edge_direction_history = edge_direction_history
+    self.geometry_type = geometry_type
     self.size = size
     self.pos = pos
     self.sensor_tag = sensor_tag
@@ -76,9 +79,16 @@ def Random_Node(parent_node,expand_direction):
     return ' '.join(joint_axis)
   root_or_not = not(parent_node and expand_direction)
   second_or_not = False
+  # link type
+  type_range = c.link_type_range
+  link_type = random.sample(type_range, k=1)[0]
   # link size
   size_range = c.link_size_range
   size = [random.uniform(*size_range), random.uniform(*size_range), random.uniform(*size_range)]
+  if link_type == "sphere":
+    size = [size[0]]*3
+  elif link_type == "cylinder":
+    size = [size[0], size[0], size[2]] #TODO this assume we don't rotate the cylinder
   #joint
   edge = None 
   edge_direction_history = []
@@ -96,10 +106,14 @@ def Random_Node(parent_node,expand_direction):
     pos = np.array(size)*np.array(link_trans_matrix)
   else:
     pos = np.array(size)*np.array(link_trans_list()) 
+  if parent_node:
+    node_depth = len(parent_node.edge_direction_history) + 1
+  else:
+    node_depth = 0
   sensor_tag = random.sample([True,False],k=1)[0]
-  color_name = 'green' if sensor_tag else 'red'
-  color = '0 1.0 0 1.0' if sensor_tag else '0 0 1.0 1.0'
-  n = Node(edge, edge_direction_history, size, pos, sensor_tag, color, color_name, [])
+  color_name = list(sensored_palette.keys())[node_depth] if sensor_tag else list(unsensored_palette.keys())[node_depth]
+  color = sensored_palette[color_name] if sensor_tag else unsensored_palette[color_name]
+  n = Node(edge, edge_direction_history, link_type, size, pos, sensor_tag, color, color_name, [])
   return n
 
 def Traverse_Node(root_node):
@@ -185,7 +199,7 @@ def Convert_Tree_to_Urdf(root_node, file_name):
   while stack:
     (parent_name,n) = stack.pop(0); link_id += 1; link_name = f"link{link_id}"
     links[link_name] = {
-      "name": link_name, "size": n.size, "pos": n.pos,
+      "name": link_name, "geometry_type": n.geometry_type, "size": n.size, "pos": n.pos,
       'sensor_tag': n.sensor_tag, "color": n.color, "color_name": n.color_name,
     }
     if n.attached_edge:
@@ -203,7 +217,7 @@ def Convert_Tree_to_Urdf(root_node, file_name):
   # generate urdf file
   pyrosim.Start_URDF(file_name)
   for link_dict in links.values():
-    pyrosim.Send_Cube(name=link_dict['name'], pos=link_dict['pos'], size=link_dict['size'], color=link_dict['color'], color_name=link_dict['color_name'])
+    pyrosim.Send_Cube(name=link_dict['name'], pos=link_dict['pos'], size=link_dict['size'], color=link_dict['color'], color_name=link_dict['color_name'], geometry_type=link_dict["geometry_type"])
   for joint_dict in joints.values():
     pyrosim.Send_Joint(name=joint_dict['name'], parent=joint_dict['parent'], child=joint_dict['child'], \
       type = "revolute", position=joint_dict['position'], jointAxis=joint_dict['jointAxis'])

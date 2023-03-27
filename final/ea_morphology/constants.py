@@ -2,6 +2,7 @@ import codeop
 import numpy
 
 #link
+link_type_range = ["box", "cylinder", "sphere"]
 link_size_range = (0.1,0.4) #(0.1, 0.6) #(0.1,0.2)  #(0.05,0.4) #(0.2,0.2) 
 maximum_depth = 3#2
 minimum_depth = 2#2
@@ -18,5 +19,5 @@ expand_directions = [
 ]
 
 #EArelated
-numberOfGenerations= 2 #20  #20 #5 #10
-populationSize = 5 #20 #20 #60 #10
+numberOfGenerations= 20  #20 #5 #10
+populationSize = 20 #20 #60 #10
