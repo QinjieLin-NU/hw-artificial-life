@@ -11,7 +11,8 @@ def get_joints_links(file_name):
   links, joints = [], []
   for l in root.findall("link"):
     color_name = l.findall('visual')[0].findall('material')[0].get('name')
-    sensor_tag = True if color_name == 'green' else False
+    # sensor_tag = True if color_name == 'green' else False
+    sensor_tag = True if  "sensor" in color_name else False
     links.append({'name': l.get('name'),
                   'sensor_tag': sensor_tag})
   for j in root.findall("joint"):
