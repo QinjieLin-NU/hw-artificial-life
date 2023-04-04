@@ -9,21 +9,34 @@ import os
 import sys
 import random
 
+def set_seed(input_seed=14213):
+  random.seed(input_seed)
+  print("="*40, input_seed)
+
 def Create_World(init_x=1.0, option='all'):
   seed = random.randint(0,50000) 
-  seed = 14213 # 33692 #random.randint(0,50000) #8125 #random.randint(0,50000)
-  random.seed(seed)
-  print("="*40, seed)
   if option == "terrain":
+    set_seed()
     tw = TerrainWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) 
     tw.Create_SDF()
+  elif option == "terrain1":
+    set_seed()
+    tw = TerrainWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) 
+    tw.Create_SDF(roughness=0.5)
+  elif "terrain" in option:
+    set_seed(int(option.replace("terrain","")))
+    tw = TerrainWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) 
+    tw.Create_SDF(roughness=0.5)
   elif option == "obstacle":
+    set_seed()
     tw = MazeWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) #4.5
     tw.Create_SDF()
   elif option == "bumper":
+    set_seed()
     tw = BumperWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) #8.5
     tw.Create_SDF()
   elif option == "step":
+    set_seed()
     tw = StairWorld(fileName=f"./data/{option}/world.sdf", initPos=[0.5, 0, 0]) #12.5
     tw.Create_SDF()
 
@@ -32,7 +45,7 @@ if __name__=="__main__":
   directOrGUI = "GUI"
   brainID = "-1"
   urdfId = 0
-  envName = "bumper" #"step" #"bumper" #"obstacle" #"terrain" 
+  envName = "terrain1" #"step" #"bumper" #"obstacle" #"terrain" 
 
   # from ea_morphology.solution import Check_Self_Collision
   # xx = Check_Self_Collision("/home/ubuntu/mnt_magics/code_ws/ros/artificiallife/hw-artificial-life/final/data/bumper/seed0/body0/body.urdf")
@@ -45,6 +58,6 @@ if __name__=="__main__":
 
   simulation = SIMULATION(directOrGUI, brainID, urdfId, seedId, envName, removeBrain=False)
   import time 
-  time.sleep(1000)
+  # time.sleep(1000)
   simulation.Run()
 

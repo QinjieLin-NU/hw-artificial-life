@@ -2,6 +2,7 @@ import copy
 import matplotlib.pyplot as plt
 import numpy
 import os
+import ray
 import random
 
 from ea_morphology.solution import SOLUTION
@@ -17,12 +18,23 @@ class PARALLEL_HILL_CLIMBER:
     self.envName =  envName
     self.seedId = seedId
     set_seed(seedId)
+    self.average_fitness_history = []
     self.parents = {}
     self.nextAvailableID = 0
-    for i in range(c.populationSize):
-      self.parents[i] = SOLUTION(self.nextAvailableID, self.seedId, self.envName)
-      self.nextAvailableID += 1
-    self.average_fitness_history = []
+    # for i in range(c.populationSize):
+    #   self.parents[i] = SOLUTION(self.nextAvailableID, self.seedId, self.envName)
+    #   self.nextAvailableID += 1
+    ray.init()
+    @ray.remote
+    def Generate_SOLUTION(taskId, taskSeed, solutionSeed, envName):
+      set_seed(taskSeed)
+      s = SOLUTION(taskId, solutionSeed, envName)
+      return s
+    ray_seeds = [random.randint(0,10000) for i in range(c.populationSize)]
+    ray_tasks = [Generate_SOLUTION.remote(i, ray_seeds[i], self.seedId,envName) for i in range(c.populationSize)]
+    ray_results = ray.get(ray_tasks)
+    self.parents = {index: element for index, element in enumerate(ray_results)}
+    self.nextAvailableID += c.populationSize
 
   def Evolve(self):
     self.Evaluate(self.parents)
@@ -53,8 +65,17 @@ class PARALLEL_HILL_CLIMBER:
       self.nextAvailableID += 1
 
   def Mutate(self):
-    for k in self.children.keys():
-      self.children[k].Mutate()
+    # for k in self.children.keys():
+      # self.children[k].Mutate()
+    @ray.remote
+    def Mutate_Once(taskSeed, taskSolution, taskKey):
+      set_seed(taskSeed)
+      taskSolution.Mutate()
+      return (taskKey, taskSolution)
+    ray_seeds = [random.randint(0,10000) for  k in self.children.keys()]
+    ray_tasks = [Mutate_Once.remote(ray_seeds[i], self.children[k], k) for  (i,k) in enumerate(self.children.keys())]
+    ray_results = ray.get(ray_tasks)
+    self.children = {index: element for index, element in ray_results}
 
   def Select(self):
     for k in self.parents.keys():

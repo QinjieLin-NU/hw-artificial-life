@@ -90,7 +90,11 @@ def Prepare_Joint_Dictionary(bodyID):
 
     global jointNamesToIndices
 
+    global jointNamesToType
+
     jointNamesToIndices = {}
+
+    jointNamesToType = {}
 
     for jointIndex in range( 0 , p.getNumJoints(bodyID) ):
 
@@ -98,7 +102,11 @@ def Prepare_Joint_Dictionary(bodyID):
 
         jointName = jointInfo[1].decode('UTF-8')
 
+        jointType = jointInfo[2]
+
         jointNamesToIndices[jointName] = jointIndex
+
+        jointNamesToType[jointName] = jointType
 
 def Prepare_To_Simulate(bodyID):
 
@@ -106,7 +114,7 @@ def Prepare_To_Simulate(bodyID):
 
     Prepare_Joint_Dictionary(bodyID)
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],mass=1.0,color="0 1.0 1.0 1.0",color_name="Cyan"):
+def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],mass=1.0,color="0 1.0 1.0 1.0",color_name="Cyan",geometry_type="box"):
 
     global availableLinkIndex
 
@@ -120,7 +128,7 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],mass=1.0,color="0 1.0 1.0 
 
         links.append(link)
     else:
-        link = LINK_URDF(name,pos,size,color,color_name)
+        link = LINK_URDF(name,pos,size,color,color_name,geometry_type)
 
         links.append(link)
 
@@ -155,17 +163,26 @@ def Send_Synapse( sourceNeuronName , targetNeuronName , weight ):
  
 def Set_Motor_For_Joint(bodyIndex,jointName,controlMode,targetPosition,maxForce):
 
-    p.setJointMotorControl2(
-
-        bodyIndex      = bodyIndex,
-
-        jointIndex     = jointNamesToIndices[jointName],
-
-        controlMode    = controlMode,
-
-        targetPosition = targetPosition,
-
-        force          = maxForce)
+    if jointNamesToType[jointName]  == p.JOINT_REVOLUTE:
+        p.setJointMotorControl2(
+            bodyIndex      = bodyIndex,
+            jointIndex     = jointNamesToIndices[jointName],
+            controlMode    = controlMode,
+            targetPosition = targetPosition,
+            force          = maxForce)
+    elif jointNamesToType[jointName]  == p.JOINT_SPHERICAL:
+        abs_limit = 0.78 #hard limit
+        cliped_position = max(min(targetPosition, abs_limit), -abs_limit)
+        target_orientation = p.getQuaternionFromEuler([cliped_position, cliped_position, cliped_position]) 
+        p.setJointMotorControlMultiDof(
+            bodyIndex, jointNamesToIndices[jointName], controlMode, targetPosition=target_orientation, force=[maxForce,maxForce,maxForce])
+    else:
+        p.setJointMotorControl2(
+            bodyIndex      = bodyIndex,
+            jointIndex     = jointNamesToIndices[jointName],
+            controlMode    = controlMode,
+            targetPosition = targetPosition,
+            force          = maxForce)
 
 def Start_NeuralNetwork(filename):
 

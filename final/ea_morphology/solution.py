@@ -11,7 +11,8 @@ from ea_morphology.colorPalette import unsensored_palette as unsensored_palette
 import pyrosim.pyrosim as pyrosim
 
 class Edge:
-  def __init__(self, pos, axis, expand_direction):
+  def __init__(self, joint_type, pos, axis, expand_direction):
+    self.joint_type = joint_type
     self.pos = pos
     self.axis = axis
     self.expand_direction = expand_direction      
@@ -80,8 +81,7 @@ def Random_Node(parent_node,expand_direction):
   root_or_not = not(parent_node and expand_direction)
   second_or_not = False
   # link type
-  type_range = c.link_type_range
-  link_type = random.sample(type_range, k=1)[0]
+  link_type = random.sample(c.link_type_range, k=1)[0]
   # link size
   size_range = c.link_size_range
   size = [random.uniform(*size_range), random.uniform(*size_range), random.uniform(*size_range)]
@@ -98,7 +98,8 @@ def Random_Node(parent_node,expand_direction):
     edge_pos = list(np.array(parent_node.size) * np.array(joint_expand_list())) #exapnd direction transition
     # edge_pos = list(np.array(edge_pos) + np.array(joint_trans_list())) #TODO position transtion
     edge_axis = get_joint_axis() 
-    edge = Edge(edge_pos, edge_axis, expand_direction)
+    edge_type = random.sample(c.joint_type_range, k=1)[0]
+    edge = Edge(edge_type, edge_pos, edge_axis, expand_direction)
     edge_direction_history = parent_node.edge_direction_history+[expand_direction]
   # link pos
   if root_or_not:
@@ -111,8 +112,9 @@ def Random_Node(parent_node,expand_direction):
   else:
     node_depth = 0
   sensor_tag = random.sample([True,False],k=1)[0]
-  color_name = list(sensored_palette.keys())[node_depth] if sensor_tag else list(unsensored_palette.keys())[node_depth]
-  color = sensored_palette[color_name] if sensor_tag else unsensored_palette[color_name]
+  render_color_name = list(sensored_palette.keys())[node_depth] if sensor_tag else list(unsensored_palette.keys())[node_depth]
+  color_name = " sensored "+render_color_name if sensor_tag else render_color_name
+  color = sensored_palette[render_color_name] if sensor_tag else unsensored_palette[render_color_name]
   n = Node(edge, edge_direction_history, link_type, size, pos, sensor_tag, color, color_name, [])
   return n
 
@@ -183,11 +185,11 @@ def Mutate(tree_root):
 
 def Convert_Tree_to_Urdf(root_node, file_name):
   if not os.path.exists(os.path.dirname(os.path.dirname(os.path.dirname(file_name)))):
-    os.makedirs(os.path.dirname(os.path.dirname(os.path.dirname(file_name))))
+    os.makedirs(os.path.dirname(os.path.dirname(os.path.dirname(file_name))), exist_ok=True)
   if not os.path.exists(os.path.dirname(os.path.dirname(file_name))):
-    os.makedirs(os.path.dirname(os.path.dirname(file_name)))
+    os.makedirs(os.path.dirname(os.path.dirname(file_name)), exist_ok=True)
   if not os.path.exists(os.path.dirname(file_name)):
-    os.makedirs(os.path.dirname(file_name))
+    os.makedirs(os.path.dirname(file_name), exist_ok=True)
   #out min depth
   min_depth = Find_Min_Depth(root_node)
   with open(os.path.dirname(file_name)+"/min_depth.txt","w") as f:
@@ -208,6 +210,7 @@ def Convert_Tree_to_Urdf(root_node, file_name):
         'name': joint_name,
         'parent': parent_name, 'child': link_name, 
         'position': n.attached_edge.pos, 'jointAxis': n.attached_edge.axis,
+        'jointType': n.attached_edge.joint_type
       }
     # print(n.edge_direction_history)
     for c in n.children:
@@ -220,7 +223,7 @@ def Convert_Tree_to_Urdf(root_node, file_name):
     pyrosim.Send_Cube(name=link_dict['name'], pos=link_dict['pos'], size=link_dict['size'], color=link_dict['color'], color_name=link_dict['color_name'], geometry_type=link_dict["geometry_type"])
   for joint_dict in joints.values():
     pyrosim.Send_Joint(name=joint_dict['name'], parent=joint_dict['parent'], child=joint_dict['child'], \
-      type = "revolute", position=joint_dict['position'], jointAxis=joint_dict['jointAxis'])
+      type = joint_dict['jointType'], position=joint_dict['position'], jointAxis=joint_dict['jointAxis'])
   pyrosim.End()
   return list(links.values()), list(joints.values())
 
@@ -297,7 +300,7 @@ class SOLUTION:
     self.Generate_URDF()
     brain_seed = random.randint(0,99999)
     os.system(f"python3 search_brain.py --urdf_id {self.m_id} --morphology_seed {self.seed} --brain_seed {brain_seed} --env_name {self.env_name} > /dev/null 2>&1 &")
-    # os.system(f"python3 search_brain.py --urdf_id {self.m_id} --morphology_seed {self.seed} --brain_seed {brain_seed} --env_name {self.env_name} ")
+    # os.system(f"python3 search_brain.py --urdf_id {self.m_id} --morphology_seed {self.seed} --brain_seed {brain_seed} --env_name {self.env_name}")
     return
   
   def Replay_Best(self):

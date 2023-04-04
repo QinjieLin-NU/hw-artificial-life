@@ -148,4 +148,5 @@ electric_palette = {
     'epcolor5': (0.345, 0.384, 0.424, 1), # 58626D
 }
 
-sensored_palette, unsensored_palette =  blue_palette, blue_palette
+sensored_palette, unsensored_palette =  green_palette, blue_palette
+# sensored_palette, unsensored_palette =  neon_retro_palette, electric_palette

@@ -11,11 +11,10 @@ class MOTOR:
     self.max_force = c.max_force
 
   def Set_Value(self, desiredAngle, robotId):
-    # print(timestep, self.jointName,self.motorValues[timestep] )
     pyrosim.Set_Motor_For_Joint(
       bodyIndex = robotId,
       jointName = self.jointName,
       controlMode = p.POSITION_CONTROL,
       targetPosition = desiredAngle,
-      maxForce = self.max_force )
+      maxForce = self.max_force)
   
