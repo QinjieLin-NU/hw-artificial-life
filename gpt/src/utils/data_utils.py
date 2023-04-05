@@ -1,4 +1,5 @@
 from datetime import datetime
+import numpy as np
 import os
 import pickle
 import re
@@ -53,6 +54,29 @@ class PreprocessedData:
 
     def __str__(self):
         return f"grid map: {self.sdf_sequence}, goal: {self.goal_sequence}, urdf: {self.urdf_sequence}, score: {self.score_sequence}"
+
+    def round_str(self, precision=None):
+        if not precision:
+            return f"grid map: {self.sdf_sequence}, goal: {self.goal_sequence}, urdf: {self.urdf_sequence}, score: {self.score_sequence}"
+        else:
+            round_sdf_sequence, round_urdf_sequence, round_goal_sequence, round_score_sequence = self.round_sequence(precision)
+            return f"grid map: {round_sdf_sequence}, goal: {round_goal_sequence}, urdf: {round_urdf_sequence}, score: {round_score_sequence}"
+        
+    def round_sequence(self, precision=None):
+        round_sdf_sequence = np.round(self.sdf_sequence,precision)
+        round_urdf_sequence = [
+            tuple(round(x, precision) if isinstance(x, float) else x for x in sublist)
+            if not isinstance(sublist, str)
+            else sublist
+            for sublist in [
+                (x if not isinstance(x, tuple) else tuple(round(y, precision) if isinstance(y, float) else y for y in x) for x in seq
+                )
+                for seq in self.urdf_sequence
+            ]
+        ]
+        round_goal_sequence = tuple([round(x,precision) for x in self.goal_sequence])
+        round_score_sequence =  tuple([round(x,precision) for x in self.score_sequence])
+        return round_sdf_sequence, round_urdf_sequence, round_goal_sequence, round_score_sequence
 
 def save_data(file_dir, input_data):
     now = datetime.now()

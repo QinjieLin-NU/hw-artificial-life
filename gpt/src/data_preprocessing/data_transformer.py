@@ -97,3 +97,8 @@ def convert_sdf_to_gridmap(sdf_string, return_submap=False):
         return grid_map[6:10,3:7]
     else:
         return grid_map
+
+def preprocess_data(preprocess_file):
+    preprocessed_data = read_data(preprocess_file)
+    dataset = [seq.round_str(2) for seq in preprocessed_data]
+    return dataset
