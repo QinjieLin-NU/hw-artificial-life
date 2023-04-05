@@ -19,16 +19,15 @@ if __name__=="__main__":
     # print("raw data file:",raw_file)
 
     # data_tf = data_transformer.DataTransformer()
-    # preprossed_file = data_tf.generate_sequence(raw_file, save_dir=proprocessdata_dir, subset=None)
-    # print("preprossed_file data file:",preprossed_file) 
+    # preprocessed_file = data_tf.generate_sequence(raw_file, save_dir=proprocessdata_dir, subset=None)
+    # print("preprocessed_file data file:",preprocessed_file) 
 
-    preprossed_file = "./data/preprocessed/data_2304041728.pkl"
+    preprocessed_file = "./data/preprocessed/data_2304041728.pkl"
     trainer_output_dir = "./data/tutorial/model"
     trainer_save_dir = f"./data/tutorial/finetuned_model_{datetime.now().strftime('%y%m%d%H%M')}"
     seed = 2345 #1234 #42
     max_length = 512 #256 #128
-    seed_utils.set_seeds(seed)
-    dataset = data_transformer.preprocess_data(preprossed_file)
+    dataset = data_transformer.preprocess_data(preprocessed_file)
     training_args = TrainingArguments(
         output_dir=trainer_output_dir,
         overwrite_output_dir=True,
@@ -36,6 +35,7 @@ if __name__=="__main__":
         per_device_train_batch_size=4,
         save_steps=100,
         save_total_limit=2,
+        seed=seed,
     )
     trainer.train_gpt_model(
         dataset=dataset, 
