@@ -2,6 +2,7 @@ from datetime import datetime
 from transformers import TrainingArguments
 
 import src.model.trainer as trainer
+from src.utils.data_utils import read_data as read_data
 
 if __name__=="__main__":
     preprocessed_file = "./data/preprocessed/data_2304041728.pkl"
