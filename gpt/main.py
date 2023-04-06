@@ -1,33 +1,17 @@
 from datetime import datetime
 from transformers import TrainingArguments
 
-import src.data_preprocessing.data_downloader as data_downloader
-import src.data_preprocessing.data_transformer as data_transformer
 import src.model.trainer as trainer
-import src.utils.seed_utils as seed_utils
 
 if __name__=="__main__":
-    # data_dir = "../final/data"
-    # env_pattern = r"terrain\d+"
-    # seed_list = ["seed1234", "seed2345"] 
-    # brain_type = "ea"
-    # rawdata_dir = "./data/raw"
-    # proprocessdata_dir = "./data/preprocessed"
-    
-    # downloader = data_downloader.DataDownloader()
-    # raw_file = downloader.download_file(data_dir, env_pattern, seed_list, brain_type, rawdata_dir)
-    # print("raw data file:",raw_file)
-
-    # data_tf = data_transformer.DataTransformer()
-    # preprocessed_file = data_tf.generate_sequence(raw_file, save_dir=proprocessdata_dir, subset=None)
-    # print("preprocessed_file data file:",preprocessed_file) 
-
     preprocessed_file = "./data/preprocessed/data_2304041728.pkl"
     trainer_output_dir = "./data/tutorial/model"
     trainer_save_dir = f"./data/tutorial/finetuned_model_{datetime.now().strftime('%y%m%d%H%M')}"
+    
+    preprocessed_data = read_data(preprocessed_file)
+    dataset = [seq.round_str(2) for seq in preprocessed_data]
     seed = 2345 #1234 #42
     max_length = 512 #256 #128
-    dataset = data_transformer.preprocess_data(preprocessed_file)
     training_args = TrainingArguments(
         output_dir=trainer_output_dir,
         overwrite_output_dir=True,

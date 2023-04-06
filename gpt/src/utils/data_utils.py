@@ -64,21 +64,36 @@ class PreprocessedData:
         
     def round_sequence(self, precision=None):
         round_sdf_sequence = np.round(self.sdf_sequence,precision)
-        round_urdf_sequence = [
-            tuple(round(x, precision) if isinstance(x, float) else x for x in sublist)
-            if not isinstance(sublist, str)
-            else sublist
-            for sublist in [
-                (x if not isinstance(x, tuple) else tuple(round(y, precision) if isinstance(y, float) else y for y in x) for x in seq
-                )
-                for seq in self.urdf_sequence
+        # Check if all elements in the list are tuples
+        if all(isinstance(element, tuple) for element in self.urdf_sequence):
+            round_urdf_sequence = [
+                tuple(round(x, precision) if isinstance(x, float) else x for x in sublist)
+                if not isinstance(sublist, str)
+                else sublist
+                for sublist in [
+                    (x if not isinstance(x, tuple) else tuple(round(y, precision) if isinstance(y, float) else y for y in x) for x in seq
+                    )
+                    for seq in self.urdf_sequence
+                ]
             ]
-        ]
+        # Check if all elements in the list are dictionaries
+        if all(isinstance(element, dict) for element in self.urdf_sequence):
+            round_urdf_sequence = []
+            for seq in self.urdf_sequence:
+                new_item = {}
+                for key, value in seq.items():
+                    if isinstance(value, tuple):
+                        new_item[key] = tuple(round(x, precision) for x in value)
+                    else:
+                        new_item[key] = value
+                round_urdf_sequence.append(new_item)
         round_goal_sequence = tuple([round(x,precision) for x in self.goal_sequence])
         round_score_sequence =  tuple([round(x,precision) for x in self.score_sequence])
-        return round_sdf_sequence, round_urdf_sequence, round_goal_sequence, round_score_sequence
+        return round_sdf_sequence, round_goal_sequence, round_urdf_sequence, round_score_sequence
 
 def save_data(file_dir, input_data):
+    if not os.path.exists(file_dir):
+        os.makedirs(file_dir)
     now = datetime.now()
     formatted_now = now.strftime("%y%m%d%H%M")
     file_path = f"{file_dir}/data_{formatted_now}.pkl"
@@ -90,3 +105,12 @@ def read_data(file_path):
     with open(f"{file_path}", "rb") as file:
         loaded_data = pickle.load(file)
     return loaded_data
+
+def save_df(file_dir, input_data):
+    if not os.path.exists(file_dir):
+        os.makedirs(file_dir)
+    now = datetime.now()
+    formatted_now = now.strftime("%y%m%d%H%M")
+    file_path = f"{file_dir}/data_{formatted_now}.json"
+    input_data.to_json(file_path, orient="records", indent=4)
+    return file_path
