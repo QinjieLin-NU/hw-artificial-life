@@ -2,8 +2,9 @@ import codeop
 import numpy
 
 #link
-link_type_range = ["box", "cylinder", "sphere"] #["box", "box", "box", "cylinder", "sphere"]
-link_size_range = (0.1,0.4) #(0.1, 0.6) #(0.1,0.2)  #(0.05,0.4) #(0.2,0.2) 
+link_type_mix = False
+link_type_range = ["sphere","box"] #["box", "cylinder", "sphere"] #["box", "box", "box", "cylinder", "sphere"]
+link_size_range = (0.05, 0.2) #(0.1,0.4) #(0.1, 0.6) #(0.1,0.2)  #(0.05,0.4) #(0.2,0.2) 
 joint_type_range = ["revolute", "fixed", "spherical"] #["revolute", "revolute", "revolute", "fixed", "spherical"]
 maximum_depth = 3#2
 minimum_depth = 2#2

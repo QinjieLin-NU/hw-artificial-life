@@ -81,7 +81,10 @@ def Random_Node(parent_node,expand_direction):
   root_or_not = not(parent_node and expand_direction)
   second_or_not = False
   # link type
-  link_type = random.sample(c.link_type_range, k=1)[0]
+  if root_or_not or c.link_type_mix:
+    link_type = random.sample(c.link_type_range, k=1)[0]
+  else:
+    link_type = parent_node.geometry_type
   # link size
   size_range = c.link_size_range
   size = [random.uniform(*size_range), random.uniform(*size_range), random.uniform(*size_range)]

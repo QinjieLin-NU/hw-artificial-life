@@ -22,9 +22,10 @@ class MazeWorld(WorldBase):
       for j in range(terrain_y_num):
         pos_y = 0.5 + j  -2
         size_z = 2.0 
+        size_x, size_y = 1, 1
         mass=100
         if random.sample([0,0,0,1],1)[0]:
-          pyrosim.Send_Cube(name=f"maze{box_id}", pos=[pos_x,pos_y,size_z/2.0], size=[1,1,size_z], mass=mass)
+          pyrosim.Send_Cube(name=f"maze{box_id}", pos=[pos_x,pos_y,size_z/2.0], size=[size_x,size_y,size_z], mass=mass)
           box_id+=1
 
     #add wall 

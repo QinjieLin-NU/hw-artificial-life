@@ -14,15 +14,15 @@ class WorldBase:
   def Create_SDF(self):
     pass
 
-  def Add_Wall(self, pyrosim):
+  def Add_Wall(self, pyrosim, pos_y = 2.3):
     #add wall
     box_id=0
     print("="*10,"add wall","="*10)
     length = 40.0
     height = 2.0
     mass = 100
-    pyrosim.Send_Cube(name=f"wall{box_id}", pos=[0, -2.3 ,height/2.0] , size=[length,0.5,height], mass=mass)
+    pyrosim.Send_Cube(name=f"wall{box_id}", pos=[0, -pos_y ,height/2.0] , size=[length,0.5,height], mass=mass)
     box_id+=1
-    pyrosim.Send_Cube(name=f"wall{box_id}", pos=[0, 2.3 ,height/2.0] , size=[length,0.5,height], mass=mass)
+    pyrosim.Send_Cube(name=f"wall{box_id}", pos=[0, pos_y ,height/2.0] , size=[length,0.5,height], mass=mass)
     box_id+=1
     return
